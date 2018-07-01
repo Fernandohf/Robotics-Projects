@@ -4,7 +4,7 @@ Pequena coleção de projetos desenvolvidos ao longo do Metrado em Engenharia Me
 
 ## Sumário
 
-1. [Cinemática][https://github.com/Fernandohf/Robotica-Projetos/tree/master/Cinem%C3%A1tica]
+1. [Cinemática](https://github.com/Fernandohf/Robotica-Projetos/tree/master/Cinem%C3%A1tica)
 
 2. [Dinâmica]()
 
