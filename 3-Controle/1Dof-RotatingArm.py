@@ -34,14 +34,17 @@ class Manipulador1GdL:
                  M = 1.0,                     # Massa do braço (kg)
                  G = 9.8,                     # Aceleração da gravidade (m/s^2)
                  T = 0.0,                     # Torque aplicado
-                 lamb = 25,                   # Valor lambda da equação diferencial do erro 
+                 lamb = 5,                   # Valor lambda da equação diferencial do erro 
                  sat = False,                 # Caso exista saturação no motor
                  sat_lim = [-8, 8],           # Limites de Saturação
-                 friction = False,             # Caso considere o atrito no modelo
+                 friction = False,            # Caso considere o atrito no modelo
                  edo_method = 0,              # Método de resolução da EDO (LSODA=0, RK45=1)
                                               #     OBS.: LSODA é consideravelmente mais rápido,
                                               #     principalmente no caso com atrito.
+                control = True,               # Se haverá o controle do manipulador, caso contrário
+                                              #     apenas será emulado o comportamento sem atuação
                  origin = (0, 0)):
+        self.control = control
         self.edo_method = edo_method
         self.target_state = [0, 0]
         self.sat = sat
@@ -54,8 +57,9 @@ class Manipulador1GdL:
         self.torque = T
         self.origin = origin
         self.time_elapsed = 0
-        self.state = np.deg2rad(self.init_state)    # Converte os ângulos em radianos
-        self.error = [0, 0]                         # Lista com os erros [theta_hat, omega_hat]
+        # Converte o angulos em radianos e no referencia vertical
+        self.state = np.deg2rad([self.init_state[0] + 90, init_state[1]])    
+        self.error = [0, 0]     # Lista com os erros [theta_hat, omega_hat]
     
     # Função utilizada pelo solver da EDO
     def f_ode(self, t, y):
@@ -82,24 +86,26 @@ class Manipulador1GdL:
     def set_torque(self, t):
             """ Atualiza o parâmetro T (Torque) do manipulador, essa é a 
             maneira que o controlador atua no manipulador, também limita 
-            o valor que pode ser definido"""
+            o valor que pode ser definido caso exista saturação"""
             if self.sat:
-                self.torque = max(-5.0, min(t, 5.0))
+                sat0 = self.sat_limit[0]
+                satf = self.sat_limit[1]
+                self.torque = max(sat0, min(t, satf))
             else:
                 self.torque = t
 
     def position(self):
         """ Retorna a posição (x,y) atual da ponta do manipulador"""
         L = self.params[0]
-        x = np.cumsum([self.origin[0], L * cos(self.state[0])])
-        y = np.cumsum([self.origin[1], L * sin(self.state[0])])
+        x = np.cumsum([self.origin[0], L * sin(self.state[0])])
+        y = np.cumsum([self.origin[1], -L * cos(self.state[0])])
         return (x, y)
     
     def target_position(self):
             """ Retorna a posição alvo (x,y) atual da ponta do manipulador"""
             L = self.params[0]
-            x = np.cumsum([self.origin[0], L * cos(self.target_state[0])])
-            y = np.cumsum([self.origin[1], L * sin(self.target_state[0])])
+            x = np.cumsum([self.origin[0], L * sin(self.target_state[0])])
+            y = np.cumsum([self.origin[1], -L * cos(self.target_state[0])])
             return (x, y)
 
     def control_arm(self):
@@ -131,8 +137,9 @@ class Manipulador1GdL:
         """Executa um passo de comprimento dt, invoca control _arm e 
         atualiza o estado atual do manipulador"""
         # Atualiza o torque das EDO's
-        self.control_arm()
-        
+        if self.control:
+            self.control_arm()
+
         # Tempos 
         t0 = self.time_elapsed
         tf = t0 + dt
@@ -154,7 +161,7 @@ class Manipulador1GdL:
 # Função que retorna a posição angular (em radianos) em função do tempo
 def f_t(t):
     #angulo = np.deg2rad(30)
-    angulo = pi / 6 * (1 - cos(2 * pi * t))
+    angulo = pi / 6 * (1 - cos(2 * pi * t)) + np.deg2rad(90)
     # if t < 2:
     #     angulo = np.deg2rad(30)
     # elif t < 6:
@@ -165,8 +172,9 @@ def f_t(t):
     #     angulo = np.deg2rad(-90)
     return angulo
 
+#-------- EXECUÇÃO ---------#
 # Inicializa a classe
-manipulador = Manipulador1GdL([0, 0], f_t, edo_method=1, friction=True)
+manipulador = Manipulador1GdL([0, 0], f_t, edo_method=1, friction=False, control=True, lamb=10)
 dt = 1./30              # Intevalor de tempo  = 30 fps
 animate_model = True    # Se plotará a animação, caso contrário, apenas os gráficos
 tmin, tmax = [0 , 10.0] # Tempo mínimo e máximo
@@ -177,40 +185,52 @@ omegas = []             # Estados dos omegas a cada iteração
 omegas_hat = []         # Erros do omega obtidos a cada iteração
 times = []              # Tempo de cada iteração
 
-#------ GRÁFICOS E ANIMAÇÃO------#
+#------ GRÁFICOS E ANIMAÇÃO ------#
 # Figura
-fig = plt.figure(figsize=(8, 8))
+fig = plt.figure(figsize=(10, 5))
 
 # Gráficos
 if animate_model:
     # Posição dos Subplots com animação
-    grid = plt.GridSpec(2, 4, wspace=0.2, hspace=0.6)
-    pos_anim = grid[0:2, 0:2]
-    pos_torq = grid[0, 2:]
-    pos_error = grid[1, 2:]
+    time_max = 8
+    grid = plt.GridSpec(3, 6, wspace=0.5, hspace=0.6)
+    pos_anim = grid[0:3, 0:3]
+    pos_torq = grid[0, 3:]
+    pos_state = grid[1, 3:]
+    pos_error = grid[2, 3:]
+
     sim_ax = fig.add_subplot(pos_anim, aspect='equal', autoscale_on=False,
                              xlim=(-1.5, 1.5), ylim=(-1.5, 1.5))
     sim_ax.grid(alpha=0.8)
     sim_ax.set_title("Animação do Manipulador")
 
     torq_ax = fig.add_subplot(pos_torq, autoscale_on=False,
-                            xlim=(0, 6), ylim=(manipulador.sat_limit[0], manipulador.sat_limit[1]))
+                            xlim=(0, time_max), ylim=(manipulador.sat_limit[0], manipulador.sat_limit[1]))
     torq_ax.set_title("Torque x Tempo")
     torq_ax.get_xaxis().set_visible(False)
 
+    state_ax = fig.add_subplot(pos_state, autoscale_on=False,
+                            xlim=(0, time_max), ylim=(-8, 8))
+    state_ax.set_title(r"[$\theta,\dot{\theta}$] x Tempo")
+    state_ax.get_xaxis().set_visible(False)
+
     error_ax = fig.add_subplot(pos_error, autoscale_on=False,
-                            xlim=(0, 6), ylim=(-5, 5))
+                            xlim=(0, time_max), ylim=(-5, 5))
     error_ax.set_title(r"[$\hat{\theta},\dot{\hat{\theta}}$] x Tempo")
     error_ax.get_xaxis().set_visible(False)
     
     # Objetos Desenhados
-    line_anim, = sim_ax.plot([], [], 'bo-', lw=2)
-    line_ideal, = sim_ax.plot([], [], 'co-', lw=2)
+    line_anim, = sim_ax.plot([], [], 'bo-', lw=2, label="Posição do Manipulador")
+    line_ideal, = sim_ax.plot([], [], 'co-', lw=2, label="Posição Alvo")
     line_torq, = torq_ax.plot([], [], 'r-', lw=2)
+    line_state_theta, = state_ax.plot([], [], 'tab:purple', lw=2, label=r"$\theta$")
+    line_state_omega, = state_ax.plot([], [], 'm-', lw=2, label=r"$\dot{\theta}$")
     line_error_theta, = error_ax.plot([], [], 'g-', lw=2, label=r"$\hat{\theta}$")
     line_error_omega, = error_ax.plot([], [], 'y-', lw=2, label=r"$\dot{\hat{\theta}}$")
     time_text = sim_ax.text(0.04, 0.04, '', transform=sim_ax.transAxes)
+    sim_ax.legend()
     error_ax.legend()
+    state_ax.legend()
 
 else:
     grid = plt.GridSpec(4, 2, wspace=0.4, hspace=0.5)
@@ -231,28 +251,30 @@ else:
     error3_ax = fig.add_subplot(pos_error3)
     error3_ax.set_title(r"$\dot{\hat{\theta}}$ x $\hat{\theta}$")
 
-
 def init():
     """initialize animation"""
     line_anim.set_data([], [])
     line_ideal.set_data([], [])
     line_torq.set_data([], [])
+    line_state_theta.set_data([], [])
+    line_state_omega.set_data([], [])
     line_error_theta.set_data([], [])
     line_error_omega.set_data([], [])
     time_text.set_text('')
 
-    return line_anim, line_ideal, line_torq, line_error_theta, line_error_omega, time_text
-
+    return line_anim, line_ideal, line_torq, line_state_theta, line_state_omega, line_error_theta, line_error_omega, time_text
 
 def animate(i):
     """perform animation step"""
-    global manipulador, dt, torques, thetas_hat, omegas_hat, times, torq_ax, error_ax
+    global manipulador, dt, torques, thetas_hat, omegas_hat, times, torq_ax, error_ax, state_ax
 
     manipulador.step(dt)
 
     # Atualiza os dados
     t_ = manipulador.time_elapsed
+    thetas.append(manipulador.state[0])
     thetas_hat.append(manipulador.error[0])
+    omegas.append(manipulador.state[1])
     omegas_hat.append(manipulador.error[1])
     torques.append(manipulador.torque)
     times.append(t_)
@@ -261,7 +283,7 @@ def animate(i):
     # Ajusta o eixo do tempo, x
     if t_ > xmax:
         torq_ax.set_xlim((xmin, xmax * 2))
-        torq_ax.figure.canvas.draw()
+        state_ax.set_xlim((xmin, xmax * 2))
         error_ax.set_xlim((xmin, xmax * 2))
         error_ax.figure.canvas.draw()
     
@@ -269,11 +291,13 @@ def animate(i):
     line_anim.set_data(*manipulador.position())
     line_ideal.set_data(*manipulador.target_position())
     line_torq.set_data(times, torques)
+    line_state_theta.set_data(times, thetas)
+    line_state_omega.set_data(times, omegas)
     line_error_theta.set_data(times, omegas_hat)
     line_error_omega.set_data(times, thetas_hat)
     time_text.set_text('Tempo = %.1f' % manipulador.time_elapsed)
     
-    return line_anim, line_ideal, line_torq, line_error_theta, line_error_omega, time_text
+    return line_anim, line_ideal, line_torq, line_state_theta, line_state_omega, line_error_theta, line_error_omega, time_text
 
 if animate_model:
     # Animação e Simulação dos Resultados

@@ -4,22 +4,22 @@ Pequena coleção de projetos desenvolvidos ao longo do Metrado em Engenharia Me
 
 ## Sumário
 
-1. [Cinemática](#Cinemática)
+1. [Cinemática](#cinemática)
 
-2. [Dinâmica](#Dinâmica)
+2. [Dinâmica](#dinâmica)
 
-3. [Controle](#Controle)
+3. [Controle](#controle)
 
 ### [Cinemática](https://github.com/Fernandohf/Robotica-Projetos/tree/master/1-Cinem%C3%A1tica)
 
-Essa pasta contém Jupyter Notebooks que exemplicam o raciocínio da utilização do [Sympy](http://www.sympy.org/pt/index.html) na resolução da cinemática de manipuladores clássicos. Nela, também há os arquivos semparados .py da implementação.
+Essa pasta contém Jupyter Notebooks que exemplicam o raciocínio da utilização do [Sympy](http://www.sympy.org/pt/index.html) na resolução da cinemática de manipuladores clássicos.
 
 ### [Dinâmica](https://github.com/Fernandohf/Robotica-Projetos/tree/master/2-Din%C3%A2mica)
 
-Como nos aquivos da cinemática, porém esses Notebooks exemplicam o desenvolvimento das equações de movimento dos manipuladores usando esse o método de Lagrange. Nesse caso, a biblioteca utilizada ainda é o [Sympy](http://www.sympy.org/pt/index.html). 
+Como nos aquivos da cinemática, porém esses Notebooks exemplicam o desenvolvimento das equações de movimento dos manipuladores usando esse o método de Lagrange. Nesse caso, a biblioteca utilizada para esses cálculos ainda é o [Sympy](http://www.sympy.org/pt/index.html), mais especficicamente o módulo de Fisica ([Physics Module](http://docs.sympy.org/latest/modules/physics/index.html)).
 
 ### [Controle](https://github.com/Fernandohf/Robotica-Projetos/tree/master/3-Controle)
 
-Por fim, arquivos que implementam dada a dinâmica de uma dado modelo, implementam o seu controle através do método de linearização por realimentação.
+Dada a dinâmica de um manipulador, isto é, sua equação de movimento, o seu controle é implementado através do método de linearização por realimentação. Os resultados são simulados e exibidos os gráficos [Matplotlib](https://matplotlib.org/).
 
 
