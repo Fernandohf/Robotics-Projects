@@ -32,14 +32,14 @@ I = inertia(B1, I_xx, I_yy, I_zz)                 # Tensor de Inércia
 E = RigidBody('E', CM, B1, m, (I, O))             # Elo 1
 
 # Energia Potencial
-P = -m * g * B0.y
+P = - m * g * B0.y
 r_CM = (r * B1.x).express(B0)
 E.potential_energy = r_CM.dot(P)
 
 # Forças/Momentos Generalizados
 FL = [(B1, tau * B0.z)]
 # Método de Lagrange
-L = Lagrangian(B0, E)
+L = Lagrangian(B0, E).simplify()
 LM = LagrangesMethod(L, [theta], frame=B0, forcelist = FL)
 L_eq = LM.form_lagranges_equations()
 pprint(L_eq)
