@@ -29,14 +29,14 @@ class Manipulador2GdL:
     def __init__(self,
                  init_state = [0, 0, 0, 0],
                  L1 = 1.0,                    # Compriemnto dos braços 1 (m)
-                 L2 = 0.6,                    # Compriemnto dos braços 2 (m)
+                 L2 = 1.0,                    # Compriemnto dos braços 2 (m)
                  R1 = 0.5,                    # Distância até a Localização do C.M. do braço 1(m)
-                 R2 = 0.3,                    # Distância até a Localização do C.M. do braço 2(m)
-                 I1 = 0.15,                   # Momento de inércia do braço 1(kg.m^2)
-                 I2 = 0.05,                   # Momento de inércia do braço 2(kg.m^2)
+                 R2 = 0.5,                    # Distância até a Localização do C.M. do braço 2(m)
+                 I1 = 0.333,                  # Momento de inércia do braço 1(kg.m^2)
+                 I2 = 0.333,                  # Momento de inércia do braço 2(kg.m^2)
                  M1 = 1.0,                    # Massa do braço 1(kg)
-                 M2 = 0.5,                    # Massa do braço 2(kg)
-                 G = 9.81,                    # Aceleração da gravidade (m/s^2)
+                 M2 = 1.0,                    # Massa do braço 2(kg)
+                 G = 9.8,                    # Aceleração da gravidade (m/s^2)
                  T1 = 0.0,                    # Torque aplicado no elo 1
                  T2 = 0.0,                    # Torque aplicado no elo 2
                  edo_method = 'LSODA',        # Método de resolução da EDO (LSODA=0, RK45=1)
@@ -58,6 +58,8 @@ class Manipulador2GdL:
         # frames por segundo da animação
         self.fps = 1./60    
         self.solution_edo = False
+        self.P1 = 0
+        self.P2 = 0
         # Calcula a Dinâmica do Corpo
         self.solve_dynamics()
 
@@ -106,7 +108,7 @@ class Manipulador2GdL:
         CM_1.v2pt_theory(O, B0, B1)
         CM_2 = Point('CM_2')
         CM_2.set_pos(A, r_2 * B2.x)
-        CM_2.v2pt_theory(O, B0, B2)
+        CM_2.v2pt_theory(A, B0, B2)
 
         # Corpos Rígidos
         I_1 = inertia(B1, 0, 0, I_zz_1)            
@@ -116,14 +118,14 @@ class Manipulador2GdL:
 
         # Energia Potencial
         P_1 = -m_1 * g * B0.y
-        r_1_CM = (r_1 * B1.x).express(B0)
+        r_1_CM = CM_1.pos_from(O).express(B0)
         E_1.potential_energy = r_1_CM.dot(P_1)
         P_2 = -m_2 * g * B0.y
-        r_2_CM = (r_2 * B2.x).express(B0)
+        r_2_CM = CM_2.pos_from(O).express(B0).simplify()
         E_2.potential_energy = r_2_CM.dot(P_2)
 
         # Forças/Momentos Generalizados
-        FL = [(B1, tau_1 * B0.z),(B2, tau_2 * B0.z)]
+        FL = [(B1, tau_1 * B1.z), (B2, tau_2 * B2.z)]
         # Método de Lagrange
         L = Lagrangian(B0, E_1, E_2).simplify()
         LM = LagrangesMethod(L, [theta_1, theta_2], frame=B0, forcelist=FL)
@@ -161,8 +163,8 @@ class Manipulador2GdL:
         """ Retorna a posição (x,y) atual da ponta do manipulador"""
         L1 = self.num_params[0]
         L2 = self.num_params[1]
-        x = np.cumsum([self.origin[0], L1 * cos(theta1), L2 * cos(theta2)])
-        y = np.cumsum([self.origin[1], -L1 * sin(theta1), -L2 * sin(theta2)])
+        x = np.cumsum([self.origin[0], L1 * cos(theta1), L2 * cos(theta1 + theta2)])
+        y = np.cumsum([self.origin[1], -L1 * sin(theta1), -L2 * sin(theta1 + theta2)])
         return (x,y)
 
     def solve_edo(self, dt = 10):
@@ -176,7 +178,6 @@ class Manipulador2GdL:
             self.thetas_2 = solution.y[1]
             self.omegas_1 = solution.y[2]
             self.omegas_2 = solution.y[3]
-            self.time = solution.t
             self.solution_edo = solution.success
         except:
             print("A EDO não pôde ser selecionada, verifique se a solução da dinâmica" +
@@ -192,10 +193,10 @@ class Manipulador2GdL:
         #------ GRÁFICOS E ANIMAÇÃO ------#
         # Variáveis iniciais
         dt = self.fps       # fps
-        thetas_1 = []       # Estados dos thetas a cada iteração
-        thetas_2 = []       # Estados dos thetas a cada iteração
-        omegas_1 = []       # Estados dos omegas a cada iteração
-        omegas_2 = []       # Estados dos omegas a cada iteração
+        thetas_1 = []       # Estados dos thetas
+        thetas_2 = []       # Estados dos thetas
+        omegas_1 = []       # Estados dos omegas
+        omegas_2 = []       # Estados dos omegas
         times = []          # Tempo de cada iteração
         
         # Figura
@@ -286,15 +287,15 @@ class Manipulador2GdL:
         deltat = tf - t0
         print(deltat)
         # Executa a animação
-        interval = 1000 * dt - (deltat * 5)     # Intervalo em ms
+        intval = (dt - deltat) * 1000.0    # Intervalo em ms
         fr = len(self.time)
-        ani = animation.FuncAnimation(fig, animate, frames=fr, interval=interval,
+        ani = animation.FuncAnimation(fig, animate, frames=fr, interval=intval,
                                       blit=True, init_func=init)
         plt.show()
 
 
 #-------- EXECUÇÃO ---------#
 # Inicializa a classe
-manipulador = Manipulador2GdL([0, 0, 0, 0], edo_method='RK45')
+manipulador = Manipulador2GdL([90, 30, 0, 0], edo_method='RK45')
 manipulador.solve_edo(20)
 manipulador.simulate_model()

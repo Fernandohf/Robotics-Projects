@@ -45,7 +45,9 @@ P_1 = -m_1 * g * B0.z
 r_1_CM = (r_1 * B1.x).express(B0)
 E_1.potential_energy = r_1_CM.dot(P_1)
 P_2 = -m_2 * g * B0.z
-r_2_CM = (r_2 * B2.x).express(B0)
+r_2_CM = (l_1 * B1.x + r_2 * B2.x).express(B0).simplify()
+print(r_2_CM)
+print(CM_2.pos_from(O).express(B0).simplify())
 E_2.potential_energy = r_2_CM.dot(P_2)
 
 # Forças/Momentos Generalizados
