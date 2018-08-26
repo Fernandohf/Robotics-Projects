@@ -147,7 +147,7 @@ class Manipulador1GdL:
         return (x, y)
 
     def solve_edo(self, dt = 20):
-        """Executa asimulaçao do modelo em um intervalor de tempo dt"""
+        """Executa solução para o modelo em um intervalor de tempo dt"""
         # Postos que a função será avaliada
         self.time = np.arange(0, dt, self.fps)
         try:

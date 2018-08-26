@@ -29,13 +29,13 @@ class Manipulador2GdL:
     def __init__(self,
                  init_state = [0, 0, 0, 0],
                  L1 = 1.0,                    # Compriemnto dos braços 1 (m)
-                 L2 = 1.0,                    # Compriemnto dos braços 2 (m)
+                 L2 = 0.8,                    # Compriemnto dos braços 2 (m)
                  R1 = 0.5,                    # Distância até a Localização do C.M. do braço 1(m)
-                 R2 = 0.5,                    # Distância até a Localização do C.M. do braço 2(m)
+                 R2 = 0.4,                    # Distância até a Localização do C.M. do braço 2(m)
                  I1 = 0.333,                  # Momento de inércia do braço 1(kg.m^2)
-                 I2 = 0.333,                  # Momento de inércia do braço 2(kg.m^2)
+                 I2 = 0.25,                  # Momento de inércia do braço 2(kg.m^2)
                  M1 = 1.0,                    # Massa do braço 1(kg)
-                 M2 = 1.0,                    # Massa do braço 2(kg)
+                 M2 = 0.8,                    # Massa do braço 2(kg)
                  G = 9.8,                    # Aceleração da gravidade (m/s^2)
                  T1 = 0.0,                    # Torque aplicado no elo 1
                  T2 = 0.0,                    # Torque aplicado no elo 2
@@ -44,7 +44,7 @@ class Manipulador2GdL:
                                               #     principalmente no caso com atrito.
                  origin = (0, 0)):
         self.edo_method = edo_method
-        self.init_state = np.asarray(init_state, dtype='float')
+        self.init_state = np.deg2rad(np.asarray(init_state, dtype='float'))
         self.num_params = (L1, L2, R1, R2, I1, I2, M1, M2, G)
         self.torque = [T1, T2]
         self.origin = origin
@@ -201,6 +201,7 @@ class Manipulador2GdL:
         
         # Figura
         fig = plt.figure(figsize=(10, 5))
+        fig.suptitle("Simulação - SCARA")
 
         # Posição dos Subplots com animação
         time_max = 8
@@ -285,7 +286,6 @@ class Manipulador2GdL:
         animate(0)
         tf = time.time()
         deltat = tf - t0
-        print(deltat)
         # Executa a animação
         intval = (dt - deltat) * 1000.0    # Intervalo em ms
         fr = len(self.time)
@@ -296,6 +296,6 @@ class Manipulador2GdL:
 
 #-------- EXECUÇÃO ---------#
 # Inicializa a classe
-manipulador = Manipulador2GdL([90, 30, 0, 0], edo_method='RK45')
+manipulador = Manipulador2GdL([30, 0, 0, 0], edo_method='RK45')
 manipulador.solve_edo(20)
 manipulador.simulate_model()

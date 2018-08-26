@@ -16,10 +16,6 @@ Para isso, siga os seguintes passos:
 
 4. Ainda aproveitando o mesmo controlador, verifique a influência que o atrito seco na junta de rotação causa no controle do braço. O atrito é modelo pela adição do termo $0.25 \text{sgn} \theta$ no lado esquerdo da equação de movimento apresentada anteriormente.
 
-
-
-
-
 # Solução
 
 Toda a implementação necessária para a simulação e resolução do problema proposto foi feita em Python. Para que o modelo ele represente a imagem mostrada no problema, uma pequena alteração foi realizada, pois a equação diferencial foi encontrada considerando que o $\theta$  é medido em relação a parte negativa do eixo $y$, enquanto que na imagem esse valor é medido em relação ao eixo $x$. Então, foi adicionado $\pi/2$ para todos os ângulos fornecidos, de maneira que os ângulo possam ser medidos em relação ao eixo $x$. Além disso, da mesma maneira que o problema foi apresentado, as respostas serão elaboradas por etapas.
