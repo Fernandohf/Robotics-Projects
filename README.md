@@ -1,33 +1,49 @@
-# Robótica - Projetos
+# Robotics
 
-Pequena coleção de projetos desenvolvidos ao longo do Mestrado em Engenharia Mecatrônica da UFRN. Os problemas vão desde a solução da cinemática de alguns manipuladores usando `Sympy`, até a simulação de um controlador para a dinâmica de uma manipulador simples.
+Collections of Robotics projects. The notebooks covers kinematics of simple dinamics manipulators, to controller simulation using some **Python packages**.
 
-### Requisitos
+## Requirements
 
-* Sympy (Cálculo da cinemática e dinâmica de forma algébrica)
+* Sympy (Kinematics e Dinamics)
 
-* Matplolib (Visualização da simulação)
+* Matplolib (Visualization)
 
-* Scipy (Resolução das equações dinâmicas)
+* Scipy (Dinamics Equations Solver)
 
-* Dill (Para salvar / recuperar resultados já calculados.)
+* Dill (Save / Load Previous Results)
 
-## Sumário
+## Summary
 
-1. [Cinemática](#cinemática)
+1. [Kinematics](#kinematics)
 
-2. [Dinâmica](#dinâmica)
+2. [Dinamics](#dinamics)
 
-3. [Controle](#controle)
+3. [Control](#control)
 
-### [Cinemática](https://github.com/Fernandohf/Robotica-Projetos/tree/master/1-Cinem%C3%A1tica)
+## [Kinematics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/1-Cinem%C3%A1tica)
 
-Essa pasta contém Notebooks e Scripts que exemplicam o raciocínio da utilização do [Sympy](http://www.sympy.org/pt/index.html) na resolução da cinemática de alguns manipuladores clássicos. Os exemplos dados abordam desde a definição das variáveis, até a solução da cinemática dos pontos de forma numérica.
+Collection of notebooks and scripts explaining how to use [Sympy](http://www.sympy.org/pt/index.html) to solve kinematics of some classical robotics arms. 
+### Contents
+ - `Sympy`
+  - Variables definition
+  - Expression definitions
+  - Analitic solutions
 
-### [Dinâmica](https://github.com/Fernandohf/Robotica-Projetos/tree/master/2-Din%C3%A2mica)
+## [Dinamics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/2-Din%C3%A2mica)
 
-Como nos aquivos da cinemática, porém esses Notebooks exemplicam o desenvolvimento das equações de movimento dos manipuladores usando esse o método de Lagrange. Nesse caso, a biblioteca utilizada para esses cálculos ainda é o [Sympy](http://www.sympy.org/pt/index.html), mais especficicamente o módulo de Fisica ([Physics Module](http://docs.sympy.org/latest/modules/physics/index.html)).
+These Notebooks explain how to develop movement equations from robotics arm, using Lagrange's method from [Physics Module](http://docs.sympy.org/latest/modules/physics/index.html).
+### Contents
+ - `Sympy`
+  - Physics Module
+    - Body defintions
+    - Lagrange's Methods
 
-### [Controle](https://github.com/Fernandohf/Robotica-Projetos/tree/master/3-Controle)
+## [Control](https://github.com/Fernandohf/Robotica-Projetos/tree/master/3-Controle)
 
-Dada a dinâmica de um manipulador, isto é, sua equação de movimento, o seu controle é implementado através do método de linearização por realimentação. Os resultados são simulados e exibidos em gráficos da [Matplotlib](https://matplotlib.org/).
+Given previous results, it is now implemented linearization by state feedback. The results are animated and visualized using [Matplotlib](https://matplotlib.org/).
+
+### Contents
+ - Linearization by State Feedback
+ - Matplotlib
+  - Plots
+  - Animations
