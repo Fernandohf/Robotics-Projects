@@ -36,7 +36,7 @@ r_C  = r_B.express(B0) + B2_r_BC.express(B0)
 v_C = (time_derivative(r_C, B0))
 a_C = (time_derivative(v_C, B0))
 
-# Simplifcação dos Resultados
+# Simplificação dos Resultados
 r_A = (r_A.to_matrix(B0)).applyfunc(trigsimp)
 v_A = (v_A.to_matrix(B0)).applyfunc(trigsimp)
 a_A = (a_A.to_matrix(B0)).applyfunc(trigsimp)
