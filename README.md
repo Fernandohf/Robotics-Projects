@@ -2,15 +2,23 @@
 
 Collections of Robotics projects. The notebooks covers from kinematics of simple manipulators, to control simulations using some **Python packages**.
 
+## Robots
+
+### 1- Scara
+
+![Robotic arm motion animation]()
+
+Scara is a robotic manipulator with 2 degrees of freedom (DoF)
+
 ## Requirements
 
-* Sympy (Kinematics e Dynamics)
+- Sympy (Kinematics e Dynamics)
 
-* Matplolib (Visualization)
+- Matplolib (Visualization)
 
-* Scipy (Dynamics Equations Solver)
+- Scipy (Dynamics Equations Solver)
 
-* Dill (Save / Load Previous Results)
+- Dill (Save / Load Previous Results)
 
 ## Summary
 
@@ -22,27 +30,34 @@ Collections of Robotics projects. The notebooks covers from kinematics of simple
 
 ## [Kinematics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/1-Kinematics)
 
-Collection of notebooks and scripts explaining how to use [Sympy](http://www.sympy.org/pt/index.html) to solve kinematics of some classical robotics arms. 
+Collection of notebooks and scripts explaining how to use [Sympy](http://www.sympy.org/pt/index.html) to solve kinematics of 2 robotic arms: 2DoF Scara and 3DoF Anthropomorphic Arm.
+
 ### Contents
- - `Sympy`
-  - Variables definition
-  - Expression definitions
-  - Analytic solutions
+
+- `Sympy`
+- Variables definition
+- Expression definitions
+- Analytic solutions
 
 ## [Dynamics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/2-Dynamics)
 
 These Notebooks explain how to develop movement equations from robotics arm, using Lagrange's method from [Physics Module](http://docs.sympy.org/latest/modules/physics/index.html).
+
 ### Contents
- - `Sympy`
-  - Physics Module
-    - Body definitions
-    - Lagrange's Methods
+
+- `Sympy`
+- Physics Module
+  - Body definitions
+  - Lagrange's Methods
 
 ## [Simulation](https://github.com/Fernandohf/Robotica-Projetos/tree/master/3-Simulation)
+
 Here the models is simulated using `matplotlib` animations. Additionally, the resulting dynamics equations are reused using `pickle`.
+
 ### Contents
- - `Matplotlib`
-  - Animations
+
+- `Matplotlib`
+- Animations
 - Pickle
   - Load / Save functions
 
@@ -51,4 +66,5 @@ Here the models is simulated using `matplotlib` animations. Additionally, the re
 Given previous results, it is now implemented linearization by state feedback. The results are animated and visualized using [Matplotlib](https://matplotlib.org/).
 
 ### Contents
- - Linearization by State Feedback
+
+- Linearization by State Feedback
