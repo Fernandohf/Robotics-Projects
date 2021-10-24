@@ -1,8 +1,8 @@
-## [Dynamics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/2-Dynamics)
+# Dynamics
 
 These Notebooks explain how to develop movement equations from robotics arm, using Lagrange's method from [Sympy - Physics Module](http://docs.sympy.org/latest/modules/physics/index.html).
 
-### Contents
+## Contents
 
 - `Sympy`
 - Physics Module
