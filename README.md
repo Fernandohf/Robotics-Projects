@@ -42,7 +42,7 @@ Kinematics studies the relationship between the joints angles and how the produc
 
 ## [Dynamics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/2-Dynamics)
 
-These Notebooks explain how to develop movement equations from robotics arm, using Lagrange's method from [Physics Module](http://docs.sympy.org/latest/modules/physics/index.html).
+These Notebooks explain how to develop movement equations from robotics arm, using Lagrange's method from [Sympy - Physics Module](http://docs.sympy.org/latest/modules/physics/index.html).
 
 ### Contents
 
