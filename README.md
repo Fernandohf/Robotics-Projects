@@ -33,13 +33,6 @@ Anthropomorphic robots are inspired in humam arms and can serve multiple purpose
 
 Kinematics studies the relationship between the joints angles and how the produce desire movement on multiple degree of freedom linkages. This folder contains a collection of notebooks and scripts explaining how to use [Sympy](http://www.sympy.org/pt/index.html) to solve kinematics of 2 robots: [Scara](#scara) and [Anthropomorphic Arm](#anthropomorphic).
 
-### Contents
-
-- `Sympy`
-- Variables definition
-- Expression definitions
-- Analytic solutions
-
 ## [Dynamics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/2-Dynamics)
 
 These Notebooks explain how to develop movement equations from robotics arm, using Lagrange's method from [Sympy - Physics Module](http://docs.sympy.org/latest/modules/physics/index.html).
