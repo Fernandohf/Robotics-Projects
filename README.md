@@ -37,23 +37,11 @@ Kinematics studies the relationship between the joints angles and how the produc
 
 These Notebooks explain how to develop movement equations from robotics arm, using Lagrange's method from [Sympy - Physics Module](http://docs.sympy.org/latest/modules/physics/index.html).
 
-### Contents
-
-- `Sympy`
-- Physics Module
-  - Body definitions
-  - Lagrange's Methods
 
 ## [Simulation](https://github.com/Fernandohf/Robotica-Projetos/tree/master/3-Simulation)
 
 Here the models is simulated using `matplotlib` animations. Additionally, the resulting dynamics equations are reused using `pickle`.
 
-### Contents
-
-- `Matplotlib`
-- Animations
-- Pickle
-  - Load / Save functions
 
 ## [Control](https://github.com/Fernandohf/Robotica-Projetos/tree/master/4-Control)
 
