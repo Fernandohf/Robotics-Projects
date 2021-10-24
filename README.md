@@ -2,6 +2,14 @@
 
 Collections of Robotics projects. The notebooks covers from kinematics of simple manipulators, to control simulations using some **Python packages**.
 
+## Robots
+
+### 1- Scara
+
+![Robotic arm motion animation]()
+
+Scara is a robotic manipulator with 2 degrees of freedom (DoF)
+
 ## Requirements
 
 - Sympy (Kinematics e Dynamics)
@@ -22,7 +30,7 @@ Collections of Robotics projects. The notebooks covers from kinematics of simple
 
 ## [Kinematics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/1-Kinematics)
 
-Collection of notebooks and scripts explaining how to use [Sympy](http://www.sympy.org/pt/index.html) to solve kinematics of some classical robotics arms.
+Collection of notebooks and scripts explaining how to use [Sympy](http://www.sympy.org/pt/index.html) to solve kinematics of 2 robotic arms: 2DoF Scara and 3DoF Anthropomorphic Arm.
 
 ### Contents
 
