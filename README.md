@@ -12,7 +12,7 @@ Scara is a robotic manipulator with 2 degrees of freedom (DoF) commonly used for
 
 ### Anthropomorphic
 
-![Anthropomorphic arm motion animation]()
+![Anthropomorphic arm motion animation](https://github.com/Fernandohf/Robotics-Projects/raw/master/media/msedge_xbxfGl3dEd.gif)
 
 Anthropomorphic robots are inspired in humam arms and can serve multiple purpose tasks. The version studied here has 3 DoF.
 
