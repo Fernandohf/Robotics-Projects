@@ -29,19 +29,21 @@ Anthropomorphic robots are inspired in humam arms and can serve multiple purpose
 2. [Dynamics](#dynamics)
 3. [Control](#control)
 
-## [Kinematics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/1-Kinematics)
+## Kinematics
 
 Kinematics studies the relationship between the joints angles and how the produce desire movement on multiple degree of freedom linkages. This folder contains a collection of notebooks and scripts explaining how to use [Sympy](http://www.sympy.org/pt/index.html) to solve kinematics of 2 robots: [Scara](#scara) and [Anthropomorphic Arm](#anthropomorphic).
 
-## [Dynamics](https://github.com/Fernandohf/Robotica-Projetos/tree/master/2-Dynamics)
+## Dynamics
 
 These Notebooks explain how to develop movement equations from robotics arm, using Lagrange's method from [Sympy - Physics Module](http://docs.sympy.org/latest/modules/physics/index.html).
 
-## [Simulation](https://github.com/Fernandohf/Robotica-Projetos/tree/master/3-Simulation)
+## Simulation
 
 Here the models is simulated using `matplotlib` animations. Additionally, the resulting dynamics equations are reused using `pickle`.
 
-## [Control](https://github.com/Fernandohf/Robotica-Projetos/tree/master/4-Control)
+![Pendulum limulation animation](https://github.com/Fernandohf/Robotics-Projects/blob/2353144a9388bebd67827767bd128dd93b46ffd0/media/animation-output.gif)
+
+## Control
 
 Given previous results, it is now implemented linearization by state feedback. The results are animated and visualized using [Matplotlib](https://matplotlib.org/).
 
