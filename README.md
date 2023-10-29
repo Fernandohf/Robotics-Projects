@@ -41,6 +41,8 @@ These Notebooks explain how to develop movement equations from robotics arm, usi
 
 Here the models is simulated using `matplotlib` animations. Additionally, the resulting dynamics equations are reused using `pickle`.
 
+![Pendulum limulation animation](https://github.com/Fernandohf/Robotics-Projects/blob/2353144a9388bebd67827767bd128dd93b46ffd0/media/animation-output.gif)
+
 ## Control
 
 Given previous results, it is now implemented linearization by state feedback. The results are animated and visualized using [Matplotlib](https://matplotlib.org/).
